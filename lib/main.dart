@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
       ),
       debugShowCheckedModeBanner: false,
-      home: const NoteAddScreen(),
+      home: const HomeScreen(),
     );
   }
 }
