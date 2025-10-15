@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:note_app_sqflite/view/Home_screen/home_screen.dart';
-import 'package:note_app_sqflite/view/Note_add_screen/note_add_screen.dart';
 
 void main() {
   runApp(const MyApp());
