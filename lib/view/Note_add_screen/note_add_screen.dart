@@ -166,8 +166,8 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
                 ),
               ),
               InkWell(
-                onTap: () {
-                  Notescreencontroller.addNote(
+                onTap: () async {
+                 await Notescreencontroller.addNote(
                     title: titlecontroller.text,
                     des: descriptioncontroller.text,
                     date: datecontroller.text,

@@ -13,18 +13,27 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Notescreencontroller.getAllNotes();
+      setState(() {
+        
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
         onPressed: () async {
-        await  Navigator.push(
+          await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => NoteAddScreen()),
           );
-          setState(() {
-            
-          });
+          setState(() {});
         },
         elevation: 10,
         foregroundColor: Colors.amber,
@@ -45,9 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
       endDrawer: Drawer(),
       // backgroundColor: Colors.black,
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
         child: Column(
-        
           spacing: 10,
           children: [
             Text(
@@ -58,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-        
+
             Expanded(
               child: MasonryGridView.builder(
                 itemCount: Notescreencontroller.notelist.length,
@@ -82,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.amber,
                     ),
-                    
+
                     width: 150,
                     child: Column(
                       spacing: 10,
@@ -103,23 +111,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 10,
-        
+
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-        
+
                         Row(
                           spacing: 10,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Icon(Icons.date_range),
                             Text(
-                                                     Notescreencontroller.notelist[index]["date"],
-        
+                              Notescreencontroller.notelist[index]["date"],
+
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 10,
-        
+
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

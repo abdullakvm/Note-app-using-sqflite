@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:note_app_sqflite/controller/note_screen_controller.dart';
 import 'package:note_app_sqflite/view/Home_screen/home_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Notescreencontroller.initDb();
   runApp(const MyApp());
 }
 
