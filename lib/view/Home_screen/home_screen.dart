@@ -16,9 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Notescreencontroller.getAllNotes();
-      setState(() {
-        
-      });
+      setState(() {});
     });
     super.initState();
   }
@@ -76,6 +74,40 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisCount: 2,
                 ),
                 itemBuilder: (context, index) => InkWell(
+                  onLongPress: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Delete Note'),
+                          content: const Text(
+                            'Are you sure you want to delete this item?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // close dialog
+                              },
+                              child: const Text('Cancel',style: TextStyle(color: Colors.black)),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await Notescreencontroller.deleteElements(
+                                  Notescreencontroller
+                                      .notelist[index]["id"], // unique id
+                                );
+                                setState(() {});
+                                Navigator.of(context).pop(); // close dialog
+                              },
+                              child: const Text('Delete',style: TextStyle(color: Colors.red),),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+
                   onTap: () {
                     Navigator.push(
                       context,
@@ -96,13 +128,42 @@ class _HomeScreenState extends State<HomeScreen> {
                       spacing: 10,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          Notescreencontroller.notelist[index]["title"],
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              Notescreencontroller.notelist[index]["title"],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () async {  // edit note
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => NoteAddScreen(
+                                      isedit: true,
+                                      noteid:Notescreencontroller
+                                          .notelist[index]["id"],
+                                      notetitle: Notescreencontroller
+                                          .notelist[index]["title"],
+                                      notedes: Notescreencontroller
+                                          .notelist[index]["des"],
+                                      notetdate: Notescreencontroller
+                                          .notelist[index]["date"],
+                                      notecategory: Notescreencontroller
+                                          .notelist[index]["category"],
+                                    ),
+                                  ),
+                                );
+                                setState(() {});
+                              },
+                              icon: Icon(Icons.edit, color: Colors.black),
+                            ),
+                          ],
                         ),
                         Text(
                           Notescreencontroller.notelist[index]["des"],

@@ -2,7 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:note_app_sqflite/controller/note_screen_controller.dart';
 
 class NoteAddScreen extends StatefulWidget {
-  const NoteAddScreen({super.key});
+  const NoteAddScreen({
+    super.key,     // pass the argument
+    this.isedit = false,
+    this.notetitle,
+    this.notedes,
+    this.notetdate,
+    this.notecategory,
+    this.noteid
+  });
+  final bool isedit;   // for edit option
+  final String? notetitle;
+  final String? notedes;
+  final String? notetdate;
+  final String? notecategory;
+  final int? noteid;
 
   @override
   State<NoteAddScreen> createState() => _NoteAddScreenState();
@@ -15,12 +29,26 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
   TextEditingController datecontroller = TextEditingController();
 
   @override
+  void initState() {
+    if (widget.isedit) {
+      titlecontroller.text = widget.notetitle ?? "";
+      descriptioncontroller.text = widget.notedes ?? "";
+      datecontroller.text = widget.notetdate ?? "";
+      Notescreencontroller.selectedCategory(widget.notecategory);
+      setState(() {});
+    } else {
+      Notescreencontroller.selectedCategory(null);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          "Add note",
+          widget.isedit == true ? " Edit Note " : " Add Note ",
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -167,11 +195,20 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
               ),
               InkWell(
                 onTap: () async {
-                 await Notescreencontroller.addNote(
+                 if(widget.isedit){  // for updation
+                   await Notescreencontroller.updateNote(
+                    title: titlecontroller.text,
+                    des: descriptioncontroller.text,
+                    date: datecontroller.text,
+                    noteid: widget.noteid
+                  );
+                 }else{  // for add note
+                   await Notescreencontroller.addNote(
                     title: titlecontroller.text,
                     des: descriptioncontroller.text,
                     date: datecontroller.text,
                   );
+                 }
                   Navigator.pop(context);
                 },
                 child: Container(

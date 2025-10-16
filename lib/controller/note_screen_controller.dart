@@ -33,6 +33,7 @@ class Notescreencontroller {
     return "";
   }
 
+  // for select category
   static void selectedCategory(String? value) {
     selectedcategory = value;
   }
@@ -89,6 +90,26 @@ class Notescreencontroller {
   static Future<void> getAllNotes() async {
     notelist = await database.rawQuery('SELECT * FROM Note');
 
-    log(notelist.toString());  // to print the list in console
+    log(notelist.toString()); // to print the list in console
+  }
+
+  // delete from database
+  static Future<void> deleteElements(var noteid) async {
+    await database.rawDelete('DELETE FROM Note WHERE id = ?', [noteid]);
+    await getAllNotes(); // delete from list (update the list)
+  }
+
+  // update database
+  static Future<void> updateNote({
+    required String title,
+    required String des,
+    required String date,
+    var noteid,
+  }) async {
+    await database.rawUpdate(
+      'UPDATE Note SET title = ?, des = ?,category = ?,date = ? WHERE id = ?',
+      [title, des, selectedcategory, date, noteid],
+    );
+    await getAllNotes();
   }
 }
