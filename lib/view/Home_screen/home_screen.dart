@@ -112,7 +112,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => NoteDetailsScreen(),
+                        builder: (context) => NoteDetailsScreen(title:  Notescreencontroller
+                                          .notelist[index]["title"],des:  Notescreencontroller
+                                          .notelist[index]["des"],date:  Notescreencontroller
+                                          .notelist[index]["date"],category:  Notescreencontroller
+                                          .notelist[index]["category"]),
                       ),
                     );
                   },
